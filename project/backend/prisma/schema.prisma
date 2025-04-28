@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  gender    Gender
+  workouts  Workout[]
+  createdAt DateTime @default(now())
+}
+
+model Workout {
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  exercises  Json
+  completed  Boolean  @default(false)
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+} 
